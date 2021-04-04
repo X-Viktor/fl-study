@@ -1,5 +1,5 @@
 from pathlib import Path
-import environ
+import environ, os
 
 env = environ.Env(
     DEBUG=(bool, False)
@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'authorization',
 ]
 
 MIDDLEWARE = [
@@ -109,4 +111,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+
+AUTH_USER_MODEL = 'authorization.User'
+
+# Redirect after login/logout
+
+LOGIN_REDIRECT_URL = 'signin'
+LOGOUT_REDIRECT_URL = 'signin'

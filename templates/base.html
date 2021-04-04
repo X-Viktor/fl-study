@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}FLStudy{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+
+<body>
+<header class="bg-dark">
+    <div class="d-flex container justify-content-between align-items-center">
+        <h1 class="text-warning">FLStudy</h1>
+        {% block authorization %}{% endblock %}
+        {% if user.is_authenticated %}
+          <h5><a href="{% url 'signout' %}" class="text-danger">Выйти</a></h5>
+        {% else %}
+            <div class="d-flex">
+                <h6><a href="{% url 'signin' %}" class="text-white">Вход</a></h6>
+                <h6 class="ml-2 mr-2 text-white">/</h6>
+                <h6><a href="{% url 'signup' %}" class="text-white">Регистрация</a></h6>
+            </div>
+        {% endif %}
+    </div>
+</header>
+
+<section class="container mt-5 d-flex justify-content-center">
+    {% block content %}{% endblock %}
+</section>
+
+</body>
+</html>
