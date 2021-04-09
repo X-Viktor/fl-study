@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="d-flex justify-content-center">
+        <div class="w-50">
+            <h2 class="text-success">Вход</h2>
+
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-outline-success">Войти</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
