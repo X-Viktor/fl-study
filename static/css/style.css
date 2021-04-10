@@ -1,0 +1,39 @@
+* {
+    font-family: Ubuntu, sans-serif;
+}
+
+.logo {
+    font-weight: bold;
+}
+
+.logo > a:hover {
+    text-decoration: none;
+}
+
+.text-orange {
+    color: orange;
+}
+
+.border-orange {
+    border-color: orange;
+}
+
+.btn-orange {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-outline-orange {
+    color: #fff;
+    border-color: #28a745;
+}
+
+.list-group-item-orange {
+    position: relative;
+    display: block;
+    padding: .75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid orange;
+}

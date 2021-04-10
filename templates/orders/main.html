@@ -4,26 +4,28 @@
     Главная | {{ block.super }}
 {% endblock %}
 
+
+{% block sidebar %}
+    {% include 'inc/_sidebar.html' %}
+{% endblock %}
+
 {% block content %}
-    <div class="d-flex flex-column">
+    <section class="d-flex flex-column col-9">
         {% for order in orders %}
-            <div class="card border-warning m-3">
+            <div class="card border-orange mb-3">
                 <div class="card-body">
                     <h4 class="card-title">{{ order.title }}</h4>
-                    <p class="card-text">{{ order.description|truncatewords:40 }}</p>
+                    <p class="card-text">{{ order.description|truncatewords:35 }}</p>
                 </div>
-                <div class="card-footer d-flex justify-content-between text-muted">
-                    <div>{{ order.category.title }}</div>
-
-
+                <div class="card-footer d-flex justify-content-between">
+                    <div class="text-muted">{{ order.category.title }}</div>
                     {% if order.price %}
                         <h5 class="text-right">{{ order.price }} руб.</h5>
                     {% else %}
                         <h5 class="text-right">По договоренности</h5>
                     {% endif %}
-
                 </div>
             </div>
         {% endfor %}
-    </div>
+    </section>
 {% endblock content %}

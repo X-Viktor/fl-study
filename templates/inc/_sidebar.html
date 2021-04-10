@@ -1,0 +1,7 @@
+{% load get_categories %}
+<aside class="list-group col-3">
+    {% get_categories as categories %}
+    {% for category in categories %}
+        <a href="{% url 'category' category.slug %}" class="list-group-item-orange text-dark">{{ category.title }}</a>
+    {% endfor %}
+</aside>
