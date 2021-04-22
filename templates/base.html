@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <title>{% block title %}FLStudy{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% load static %}
+    <script src="https://kit.fontawesome.com/442945e892.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;500;600;700;900&display=swap" rel="stylesheet">
+    {% load static %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
-<header class="bg-dark">
-    {% include 'inc/_nav.html' %}
-</header>
+{% block header %}{% endblock %}
 
-<div class="container d-flex mt-5 mb-5">
-    {% block sidebar %}{% endblock %}
-    {% block content %}{% endblock %}
-</div>
+{% include 'inc/_nav.html' %}
 
+{% block content %}{% endblock %}
+
+{% block script %}{% endblock %}
 </body>
 </html>

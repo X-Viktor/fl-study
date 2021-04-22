@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Главная | {{ block.super }}
+{% endblock %}
+
+{% block header %}
+    <header>
+        <div class="container">
+            <div class="header__content d-flex flex-column justify-content-center text-black">
+                <h2>Фриланс биржа для <span class="font-weight-bold">студентов</span></h2>
+                <h5 class="font-weight-light">Наш сервис помогает студентам освободить время для важного</h5>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <section class="last-orders">
+        <div class="container">
+            <h2 class="subtitle">Последние <span class="text-orange">заказы</span></h2>
+            <div class="last-order d-flex flex-wrap justify-content-between">
+                {% include 'inc/_orders.html' %}
+            </div>
+            <a href="{% url 'orders' %}" class="btn btn-orange w-100 mt-4">Посмотреть все</a>
+        </div>
+    </section>
+{% endblock content %}
+
+{% block script %}
+    {% load static %}
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

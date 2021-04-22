@@ -1,0 +1,25 @@
+{% for order in orders %}
+    <div class="order__card card">
+        <a href="{% url 'order_detail' order.pk %}" class="text-dark">
+            <div class="order__card__body">
+                <span class="order__card__category">{{ order.category.title }}</span>
+                <h4 class="order__card__title">{{ order.title }}</h4>
+                <p class="card-text text-secondary">{{ order.description|truncatewords:20 }}</p>
+            </div>
+            <div class="order__card__footer d-flex justify-content-between">
+                <div>
+                    <p>Опубликовано</p>
+                    <h5>{{ order.date_creation|date:'d F Y' }}</h5>
+                </div>
+                <div class="text-right">
+                    <p>Вознаграждение</p>
+                    {% if order.price %}
+                        <h5>{{ order.price|floatformat:0 }} ₽</h5>
+                    {% else %}
+                        <h5>По договоренности</h5>
+                    {% endif %}
+                </div>
+            </div>
+        </a>
+    </div>
+{% endfor %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ title }} | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="form">
+                <h2 class="subtitle">{{ title }}</h2>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-dark mt-4 w-100">{{ button_title }}</button>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

@@ -1,7 +1,29 @@
 {% load get_categories %}
-<aside class="list-group col-3">
+<aside class="categories list-group col-2">
+    <h3>Категории</h3>
+    {% if all_orders %}
+        <a href="{% url 'orders' %}" class="category category_active">
+            <i class="fa fa-circle" aria-hidden="true"></i>
+            <span>Все</span>
+        </a>
+    {% else %}
+        <a href="{% url 'orders' %}" class="category">
+            <i class="fa fa-circle-o" aria-hidden="true"></i>
+            <span>Все</span>
+        </a>
+    {% endif %}
     {% get_categories as categories %}
     {% for category in categories %}
-        <a href="{% url 'category' category.slug %}" class="list-group-item-orange text-dark">{{ category.title }}</a>
+        {% if category.slug == slug %}
+            <a href="{% url 'category' category.slug %}" class="category category_active">
+                <i class="fa fa-circle" aria-hidden="true"></i>
+                <span>{{ category.title }}</span>
+            </a>
+        {% else %}
+            <a href="{% url 'category' category.slug %}" class="category">
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <span>{{ category.title }}</span>
+            </a>
+        {% endif %}
     {% endfor %}
 </aside>

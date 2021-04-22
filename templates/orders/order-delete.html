@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Заказ {{ order.pk }} | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="links">
+                <div class="links__item">
+                    <a href="{% url 'main' %}">Главная страница</a>
+                </div>
+                <div class="links__item">
+                    <a href="{% url 'orders' %}">Заказы</a>
+                </div>
+                <div class="links__item">
+                    <span>{{ order.title|truncatewords:5 }}</span>
+                </div>
+            </div>
+            <div class="form">
+                <form method="post">
+                    {% csrf_token %}
+                    <p>Вы уверены, что хотите удалить заказ "{{ order.title }}"?</p>
+                    <button type="submit" class="btn btn-red mt-4 w-100">Подтвердить</button>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Заказ {{ order.pk }} | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="links">
+                <div class="links__item">
+                    <a href="{% url 'main' %}">Главная страница</a>
+                </div>
+                <div class="links__item">
+                    <a href="{% url 'orders' %}">Заказы</a>
+                </div>
+                <div class="links__item">
+                    <span>{{ order.title|truncatewords:5 }}</span>
+                </div>
+            </div>
+
+            <div class="order-detail">
+                <div class="order-detail__body">
+                    <div class="d-flex">
+                        <div class="col-8 p-0">
+                            <h4 class="order-detail__title">{{ order.title }}</h4>
+                            <h5 class="order-detail__price">
+                                {% if order.price %}
+                                    {{ order.price|floatformat:0 }} ₽
+                                {% else %}
+                                    По договоренности
+                                {% endif %}
+                            </h5>
+                            <div class="order-detail__info d-flex">
+                                <h6>{{ order.date_creation|date:'d F Y' }}</h6>
+                                <h6>{{ order.category.title }}</h6>
+                                <h6>{{ order.customer.username }}</h6>
+                            </div>
+                        </div>
+
+                        {% if user == order.customer %}
+                            {% if order.stage == 1 %}
+                                <div class="order-detail__buttons col-4 text-right p-0 d-flex justify-content-end">
+                                    <a href="{% url 'order_edit' order.pk %}" class="btn btn-orange mr-2">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                        <span class="ml-1">Редактировать</span>
+                                    </a>
+                                    <a href="{% url 'order_delete' order.pk %}" class="btn btn-red">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        <span class="ml-1">Удалить</span>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <p class="lead">{{ order.description }}</p>
+                </div>
+
+                <div class="response">
+                    {% if user.is_authenticated %}
+                        {% if user == order.customer %}
+                            {% if order.stage == 1 %}
+                                {% if responses %}
+                                    {% for response in responses %}
+                                        <div>
+                                            <span>{{ response.responding.username }}</span>
+                                            <p>{{ response.message }}</p>
+                                            <hr>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <h6>Откликов нет</h6>
+                                {% endif %}
+
+                            {% elif order.stage == 2 %}
+                                <h6>Заказ выполняет <span class="text-orange">{{ order.performer }}</span></h6>
+                            {% endif %}
+
+                        {% else %}
+                            {% if user in responding %}
+                                <h6>Вы уже откликнулись на этот заказ</h6>
+                            {% else %}
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <button type="submit" class="btn btn-dark mt-4 w-100">Откликнуться</button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        <h6>
+                            Для того чтобы откликнуться, Вам необходимо
+                            <a href="{% url 'signin' %}" class="text-orange">войти</a>
+                            или
+                            <a href="{% url 'signup' %}" class="text-orange">зарегистрироваться</a>
+                        </h6>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
