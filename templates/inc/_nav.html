@@ -15,11 +15,11 @@
 
             <div class="nav__auth d-flex">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'signout' %}" class="text-danger">Выйти</a>
+                    <a href="{% url 'signout' %}?next={{ request.path }}" class="text-danger">Выйти</a>
                 {% else %}
-                    <a href="{% url 'signin' %}" class="text-dark">Вход</a>
+                    <a href="{% url 'signin' %}?next={{ request.path }}" class="text-dark">Вход</a>
                     <span class="ml-2 mr-2 text-white">|</span>
-                    <a href="{% url 'signup' %}" class="text-dark">Регистрация</a>
+                    <a href="{% url 'signup' %}?next={{ request.path }}" class="text-dark">Регистрация</a>
                 {% endif %}
             </div>
         </div>

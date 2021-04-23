@@ -15,10 +15,15 @@
                     <span>Заказы</span>
                 </div>
             </div>
+
             <h2 class="subtitle">Список <span class="text-orange">заказов</span></h2>
             <div class="d-flex">
                 <div class="orders d-flex flex-wrap flex-column col-9">
                     {% include 'inc/_orders.html' %}
+
+                    {% if page_obj.has_other_pages %}
+                        {% include 'inc/_pagination.html' %}
+                    {% endif %}
                 </div>
 
                 {% include 'inc/_sidebar.html' %}

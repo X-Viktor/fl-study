@@ -277,6 +277,24 @@ section {
     color: orange;
 }
 
+.pagination .page-link{
+    color: black;
+    transition: all 0.2s;
+}
+
+.pagination .page-link:hover{
+    border-color: orange;
+    background-color: white;
+    color: orange;
+}
+
+.pagination .active .page-link{
+    background-color: white;
+    color: orange;
+    border-color: orange;
+    cursor: default;
+}
+
 .order-detail {
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
 }
