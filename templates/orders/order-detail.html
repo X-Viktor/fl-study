@@ -59,34 +59,22 @@
 
                 <div class="response">
                     {% if user.is_authenticated %}
-                        {% if user == order.customer %}
-                            {% if order.stage == 1 %}
-                                {% if responses %}
-                                    {% for response in responses %}
-                                        <div>
-                                            <span>{{ response.responding.username }}</span>
-                                            <p>{{ response.message }}</p>
-                                            <hr>
-                                        </div>
-                                    {% endfor %}
-                                {% else %}
-                                    <h6>Откликов нет</h6>
-                                {% endif %}
-
-                            {% elif order.stage == 2 %}
-                                <h6>Заказ выполняет <span class="text-orange">{{ order.performer }}</span></h6>
-                            {% endif %}
-
+                        {% if responses %}
+                            {% for response in responses %}
+                                <div>
+                                    <span>{{ response.responding.username }}</span>
+                                    <p>{{ response.message }}</p>
+                                    <hr>
+                                </div>
+                            {% endfor %}
+                        {% elif response_form %}
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ response_form.as_p }}
+                                <button type="submit" class="btn btn-dark mt-4 w-100">Откликнуться</button>
+                            </form>
                         {% else %}
-                            {% if user in responding %}
-                                <h6>Вы уже откликнулись на этот заказ</h6>
-                            {% else %}
-                                <form method="post">
-                                    {% csrf_token %}
-                                    {{ form.as_p }}
-                                    <button type="submit" class="btn btn-dark mt-4 w-100">Откликнуться</button>
-                                </form>
-                            {% endif %}
+                            <h6>{{ response_message }}</h6>
                         {% endif %}
                     {% else %}
                         <h6>

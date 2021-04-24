@@ -5,42 +5,34 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
 from .forms import OrderCreateForm, ResponseForm
-from .models import Order, Response
-from authorization.models import User
+from .models import Order
+from .services.order_detail import response_check
 
 
 class MainView(ListView):
-    """ Главная страница """
+    """Отображение главной страницы."""
     model = Order
-    template_name = 'main.html'
     context_object_name = 'orders'
-
-    def get_queryset(self):
-        return Order.objects.filter(stage=1).select_related('category')[:6]
+    queryset = Order.objects.filter(stage=1).select_related('category')[:6]
+    template_name = 'main.html'
 
 
 class OrderListView(ListView):
-    """ Вывод всех заказов """
+    """Отображение всех заказов."""
     model = Order
-    template_name = 'orders/all-orders.html'
     context_object_name = 'orders'
+    queryset = Order.objects.filter(stage=1).select_related('category')
+    extra_context = {'all_orders': True}
+    template_name = 'orders/all-orders.html'
 
     paginate_by = 10
 
-    def get_context_data(self, **kwargs):
-        context = super(OrderListView, self).get_context_data(**kwargs)
-        context['all_orders'] = True
-        return context
-
-    def get_queryset(self):
-        return Order.objects.filter(stage=1).select_related('category')
-
 
 class OrderListByCategoryView(ListView):
-    """ Вывод заказов определенной категории """
+    """Отображение заказов определенной категории."""
     model = Order
-    template_name = 'orders/all-orders.html'
     context_object_name = 'orders'
+    template_name = 'orders/all-orders.html'
 
     paginate_by = 10
 
@@ -54,20 +46,18 @@ class OrderListByCategoryView(ListView):
 
 
 class OrderDetailView(DetailView):
-    """ Подробности заказа """
+    """Отображение подробностей заказа."""
     model = Order
     context_object_name = 'order'
     template_name = 'orders/order-detail.html'
 
     def get_context_data(self, **kwargs):
         context = super(OrderDetailView, self).get_context_data(**kwargs)
-        context['form'] = ResponseForm(self.request.POST or None)
-        context['responses'] = Response.objects.filter(order__id=self.kwargs['pk']).select_related('responding')
-        context['responding'] = User.objects.filter(responses__order__id=self.kwargs['pk'])
+        context.update(response_check(self.request.user, kwargs['object']))
         return context
 
     def post(self, request, pk):
-        form = ResponseForm(self.request.POST or None)
+        form = ResponseForm(self.request.POST)
         if form.is_valid():
             if not self.request.user.is_authenticated:
                 return redirect('signin')
@@ -83,7 +73,7 @@ class OrderDetailView(DetailView):
 
 
 class OrderCreateView(LoginRequiredMixin, CreateView):
-    """ Создание нового заказа """
+    """Создание нового заказа."""
     login_url = '/signin/'
     redirect_field_name = 'next'
 
@@ -105,7 +95,7 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
 
 
 class OrderUpdateView(UpdateView):
-    """ Редактирование заказа """
+    """Редактирование заказа."""
     form_class = OrderCreateForm
     template_name = 'form.html'
 
@@ -126,7 +116,7 @@ class OrderUpdateView(UpdateView):
 
 
 class OrderDeleteView(DeleteView):
-    """ Удаление заказа """
+    """Удаление заказа."""
     model = Order
     success_url = reverse_lazy('orders')
     template_name = 'orders/order-delete.html'
